@@ -7,15 +7,11 @@ public class Solution {
 
 	static int[] arr;
 	static int size;
-	static int start;
-	static int end;
 
 	public static void main(String[] args) {
 		Scanner s = new Scanner(System.in);
 		int x = s.nextInt();
-		arr = new int[2 * x];
-		start = x;
-		end = x;
+		arr = new int[x];
 		for (int i = 0; i < x; i++) {
 			char c = s.next().charAt(0);
 			// Using Integer class solved the problem of list.remove(n)
@@ -52,29 +48,15 @@ public class Solution {
 		// System.out
 		// .println("insert index: " + insIndex + " insert number: " + n);
 		if (size == 0) {
-			arr[start] = n;
+			arr[0] = n;
 		} else {
+			for (int i = size; i >= 0; i--) {
 
-			if (insIndex > (end - start) / 2) {
-				// insert from the end
-				for (int i = end; i >= start; i--) {
-
-					if (i == insIndex) {
-						arr[i] = n;
-						break;
-					} else {
-						arr[i] = arr[i - 1];
-					}
-				}
-			} else {
-				for (int i = start-1; i < end; i--) {
-
-					if (i == insIndex) {
-						arr[i] = n;
-						break;
-					} else {
-						arr[i] = arr[i + 1];
-					}
+				if (i == insIndex) {
+					arr[i] = n;
+					break;
+				} else {
+					arr[i] = arr[i - 1];
 				}
 			}
 		}
@@ -92,8 +74,8 @@ public class Solution {
 		if (size == 0)
 			return -1;
 
-		int low = start;
-		int high = end;
+		int low = 0;
+		int high = size - 1;
 		while (low <= high) {
 			int mid = low + (high - low) / 2;
 			if (n < arr[mid])
@@ -111,8 +93,8 @@ public class Solution {
 		if (size == 0)
 			return -1;
 
-		int low = start;
-		int high = end;
+		int low = 0;
+		int high = size - 1;
 		while (low <= high) {
 			int mid = low + (high - low) / 2;
 			if (n < arr[mid])
@@ -123,7 +105,7 @@ public class Solution {
 				return mid;
 		}
 		if (arr[low] > n)
-			return low-1;
+			return low;
 		else if (arr[high] > n)
 			return high;
 		else
@@ -132,11 +114,11 @@ public class Solution {
 
 	private static void printMedian() {
 		if (size % 2 != 0) {
-			System.out.println(arr[start+((end-start) / 2)]);
+			System.out.println(arr[size / 2]);
 		} else {
 			// System.out.println(size);
-			long a = arr[start+((end-start) / 2) - 1];
-			long b = arr[start+((end-start) / 2)];
+			long a = arr[(size / 2) - 1];
+			long b = arr[size / 2];
 			double c = (double) (a + b) / 2;
 			if (c - (int) c == 0) {
 				System.out.println((int) c);
@@ -149,16 +131,8 @@ public class Solution {
 
 	private static void remove(Integer n, int remIndex) {
 
-		boolean removed = false;
-		for (int i = start; i < end; i++) {
-
-			if (i == remIndex) {
-				removed = true;
-			} else {
-				if (removed) {
-					arr[i - 1] = arr[i];
-				}
-			}
+		for (int i = remIndex + 1; i < size; i++) {
+			arr[i - 1] = arr[i];
 		}
 		size--;
 		// System.out.print("[");
